@@ -1,7 +1,10 @@
 # ifd68_pro_leds_control
 
 ## 描述
+
 用于控制ifd68 pro的灯效，仅测试过`macOS 13.2 Beta版(22D5027d),芯片架构ARM64`
+
+`注意`: 目前仅支持有线连接
 
 ## 使用方法
 
@@ -29,7 +32,9 @@ cd ifd68_pro_leds_control & go run ./
 - 单键色彩控制
 - 音律 #目前不支持，未研究明白怎么进行单点控制
 ```
+
 ## 感谢
+
 [Ldream-bit/Web](https://github.com/Ldream-bit/Web)
 
 [sstallion/go-hid](https://github.com/sstallion/go-hid)
