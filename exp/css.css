@@ -1,0 +1,202 @@
+/* 清空默认边距 */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* 背景颜色 */
+body {
+    background: #b1b1b1;
+}
+
+/* 键盘底板 */
+.box {
+    width: 875px;
+    height: 275px;
+    border-radius: 15px;
+    background: #d1d1d1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: -20px 20px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    color: black;
+    text-shadow: 0 0 10px white;
+    transition: all .5s;
+}
+
+.RGB_COLOR {
+    width: 300px;
+    height: 50px;
+    margin: 80px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.RGB_COLOR > .color_dis {
+    color: red;
+}
+
+.RGB_COLOR > .red {
+    color: red;
+}
+
+.RGB_COLOR > .green {
+    color: green;
+}
+
+.RGB_COLOR > .blue {
+    color: blue;
+}
+
+/* 键盘按键 */
+.box > div {
+    width: 50px;
+    height: 50px;
+    font-size: 12px;
+    line-height: 50px;
+    text-align: center;
+    background: rgba(167, 167, 167, 0.8);
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.box > .ESC {
+    margin-right: 5px;
+}
+
+.box > .Tab {
+    width: 75px;
+    margin-right: 5px;
+}
+
+.box > .BackSpace {
+    width: 100px;
+    margin-right: 5px;
+}
+
+.box > .\| {
+    width: 75px;
+    margin-right: 5px;
+}
+
+.box > .CapsLock {
+    width: 95px;
+}
+
+.box > .Enter {
+    width: 110px;
+    margin-right: 5px;
+}
+
+.box > .LShift {
+    width: 110px;
+}
+
+.box > .RShift {
+    width: 95px;
+    margin-right: 5px;
+}
+
+.box > .↑ {
+    margin-right: 5px;
+}
+
+.box > .Space {
+    width: 345px;
+}
+
+.box > .RCtrl {
+    margin-right: 5px;
+}
+
+.box > .LCtrl {
+    width: 60px;
+    margin-right: 5px;
+}
+
+.box > .Win {
+    width: 60px;
+    margin-right: 5px;
+}
+
+.box > .LAlt {
+    width: 60px;
+    margin-right: 5px;
+}
+
+/* RGB灯光效果 */
+.RGB {
+    width: 1100px;
+    height: 100px;
+    margin: 80px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.RGB > div {
+    width: 80px;
+    height: 40px;
+    border-radius: 15%;
+    transition: all .3s;
+    opacity: 0.5;
+    cursor: pointer;
+    text-align: center;
+    line-height: 40px;
+}
+
+.RGB > div:hover {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.RGB > .red {
+    background: red;
+    box-shadow: 0 0 20px red;
+}
+
+.RGB > .orange {
+    background: orange;
+    box-shadow: 0 0 20px orange;
+}
+
+.RGB > .yellow {
+    background: yellow;
+    box-shadow: 0 0 20px yellow;
+}
+
+.RGB > .green {
+    background: green;
+    box-shadow: 0 0 20px green;
+}
+
+.RGB > .blue {
+    background: blue;
+    box-shadow: 0 0 20px blue;
+}
+
+.RGB > .purple {
+    background: purple;
+    box-shadow: 0 0 20px purple;
+}
+
+.RGB > .white {
+    background: white;
+    box-shadow: 0 0 20px white;
+}
+
+.RGB > .grey {
+    background: grey;
+    box-shadow: 0 0 20px grey;
+}
+
+.RGB > .deeppink {
+    background: deeppink;
+    box-shadow: 0 0 20px deeppink;
+}

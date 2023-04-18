@@ -1,0 +1,6 @@
+# github.com/gorilla/mux v1.8.0
+## explicit; go 1.12
+github.com/gorilla/mux
+# github.com/sstallion/go-hid v0.13.3
+## explicit; go 1.17
+github.com/sstallion/go-hid
