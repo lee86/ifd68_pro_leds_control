@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
@@ -21,6 +22,7 @@ func (ifd68 *Ifd68Pro) startServer() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
+	fmt.Println("https://127.0.0.1:8000")
 	log.Fatal(srv.ListenAndServe())
 }
 

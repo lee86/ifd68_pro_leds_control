@@ -99,6 +99,8 @@ func (ifd68 *Ifd68Pro) setColor() {
 		ifd68.SendMsg = XinKong
 	case "liangdu":
 		ifd68.LightSet()
+	case "close":
+		ifd68.SendMsg = CloseLEDS
 	//目前还不支持
 	default:
 		return

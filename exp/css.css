@@ -28,32 +28,6 @@ body {
     transition: all .5s;
 }
 
-.RGB_COLOR {
-    width: 300px;
-    height: 50px;
-    margin: 80px auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-
-.RGB_COLOR > .color_dis {
-    color: red;
-}
-
-.RGB_COLOR > .red {
-    color: red;
-}
-
-.RGB_COLOR > .green {
-    color: green;
-}
-
-.RGB_COLOR > .blue {
-    color: blue;
-}
-
 /* 键盘按键 */
 .box > div {
     width: 50px;
@@ -199,4 +173,66 @@ body {
 .RGB > .deeppink {
     background: deeppink;
     box-shadow: 0 0 20px deeppink;
+}
+
+
+.RGB_COLOR {
+    width: 420px;
+    height: 80px;
+    border-radius: 15px;
+    background: #d1d1d1;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: -20px 20px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    text-shadow: 0 0 10px white;
+    transition: all .3s;
+    opacity: 0.5;
+    cursor: pointer;
+    text-align: center;
+}
+
+.RGB_COLOR > div {
+    width: 100px;
+    height: 40px;
+    border-radius: 15%;
+    transition: all .3s;
+    cursor: pointer;
+    text-align: center;
+    line-height: 40px;
+}
+.RGB_COLOR > div > input {
+    width: 90px;
+    height: 40px;
+    border-radius: 15%;
+    transition: all .3s;
+    cursor: pointer;
+    text-align: center;
+    line-height: 40px;
+}
+.RGB_COLOR > div > a {
+    text-align: center;
+}
+
+.RGB_COLOR > .color_dis {
+    color: red;
+}
+
+.RGB_COLOR > div > .red {
+    color: red;
+    margin-right: 5px;
+}
+
+.RGB_COLOR > div > .green {
+    color: green;
+    margin-right: 5px;
+}
+
+.RGB_COLOR > div > .blue {
+    margin-right: 5px;
+    color: blue;
 }
