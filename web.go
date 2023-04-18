@@ -22,7 +22,7 @@ func (ifd68 *Ifd68Pro) startServer() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-	fmt.Println("https://127.0.0.1:8000")
+	fmt.Println("http://127.0.0.1:8000")
 	log.Fatal(srv.ListenAndServe())
 }
 
