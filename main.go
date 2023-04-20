@@ -1,5 +1,7 @@
 package main
 
+import "flag"
+
 var productIDGD = []byte{0x002d, 0x002c}
 
 const (
@@ -9,10 +11,14 @@ const (
 	vendorIDGD uint16 = 0x31d6
 )
 
+var testIs = flag.Bool("t", false, "测试开关")
+
 func main() {
-	ifd := new(Ifd68Pro)
-	ifd.init()
-	ifd.hidapi()
-	go ifd.startServer()
+	if flag.Parsed() {
+		ifd := new(Ifd68Pro)
+		ifd.init()
+		ifd.hidapi()
+		go ifd.startServer()
+	}
 	select {}
 }

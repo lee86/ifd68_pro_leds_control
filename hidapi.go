@@ -56,7 +56,9 @@ func (ifd68 *Ifd68Pro) goRead(info *hid.DeviceInfo) {
 	ifd68.device, err = hid.OpenPath(info.Path)
 	if err == nil {
 		fmt.Println("连接成功")
-		ifd68._test()
+		if *testIs {
+			ifd68._test()
+		}
 	}
 }
 
