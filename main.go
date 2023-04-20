@@ -11,7 +11,8 @@ const (
 
 func main() {
 	ifd := new(Ifd68Pro)
-	go ifd.hidapi()
+	ifd.init()
+	ifd.hidapi()
 	go ifd.startServer()
 	select {}
 }
