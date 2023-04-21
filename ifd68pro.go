@@ -181,6 +181,24 @@ func (ifd68 *Ifd68Pro) SetLight() {
 	ifd68.SendMsg = ifd68.Light
 }
 
+// SetMusicStatus 音律模式状态channel同步
+func (ifd68 *Ifd68Pro) SetMusicStatus(ch chan bool) {
+	for {
+		ifd68.MusicStatus = <-ch
+		if ifd68.MusicStatus != ifd68.MusicStatusNow {
+			ifd68.MusicStatusNow = ifd68.MusicStatus
+			switch ifd68.MusicStatus {
+			case true:
+				fmt.Println("开启音律模式")
+				ifd68.SendMsg = []byte{0x04, 0x86, 0x93, 0xcf, 0x8a, 0xdc, 0xae, 0x9c, 0x4a, 0x59, 0x61, 0xd1, 0x58, 0xe8, 0x9a, 0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
+				ifd68.KeySendMsg()
+			case false:
+				fmt.Println("关闭音律模式")
+			}
+		}
+	}
+}
+
 // init 初始化键位设置map
 func (ifd68 *Ifd68Pro) init() {
 	KeyValue = map[string][2]byte{}
