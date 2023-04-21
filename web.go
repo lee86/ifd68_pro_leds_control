@@ -36,7 +36,7 @@ func (ifd68 *Ifd68Pro) ColorHandle(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println(string(b))
 	json.Unmarshal(b, &ifd68.ColorWeb)
 	ifd68.Color.ColorType = ifd68.ColorWeb.ColorType
-	ifd68.setColor()
+	ifd68.SetColor()
 }
 
 func (ifd68 *Ifd68Pro) StartServer(w http.ResponseWriter, r *http.Request) {
