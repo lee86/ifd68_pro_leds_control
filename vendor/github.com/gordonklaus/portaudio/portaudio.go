@@ -994,10 +994,23 @@ func (s *Stream) Read() error {
 	if s.callback.IsValid() {
 		return CanNotReadFromACallbackStream
 	}
-	if s.in == nil {
-		return CanNotReadFromAnOutputOnlyStream
-	}
+	//if s.in == nil {
+	//	return CanNotReadFromAnOutputOnlyStream
+	//}
 	buf, frames, err := getBuffer(s.in, s.inParams)
+	if err != nil {
+		return err
+	}
+	return newError(C.Pa_ReadStream(s.paStream, buf, C.ulong(frames)))
+}
+func (s *Stream) ReadOut() error {
+	if s.callback.IsValid() {
+		return CanNotReadFromACallbackStream
+	}
+	//if s.in == nil {
+	//	return CanNotReadFromAnOutputOnlyStream
+	//}
+	buf, frames, err := getBuffer(s.out, s.outParams)
 	if err != nil {
 		return err
 	}

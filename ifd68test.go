@@ -80,42 +80,15 @@ func (ifd68 *Ifd68Pro) _test() {
 	}
 }
 
-// _Music 音律模式
-func (ifd68 *Ifd68Pro) _Music() {
-	ifd68.SendMsg = []byte{0x04, 0x86, 0x93, 0xcf, 0x8a, 0xdc, 0xae, 0x9c, 0x4a, 0x59, 0x61, 0xd1, 0x58, 0xe8, 0x9a, 0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
-	ifd68.KeySendMsg()
-	time.Sleep(150 * time.Millisecond)
-	for i := 0; i <= 255; i++ {
-		if !ifd68.MusicStatus {
-			fmt.Println("跳出音律")
-			break
-		}
-		ifd68.SendMsg = []byte{0x04, 0x86, 0x90, 0xc3, 0x4a, 0x6d, 0x76, 0x99, 0x09, 0x4a, 0x5a, 0x10, 0x37, 0x8e, 0xf6, 0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
-		ifd68.KeySendMsg()
-		time.Sleep(120 * time.Millisecond)
-		fmt.Println(i)
-		ifd68.SendMsg = []byte{0x04, 0x86, 0x90,
-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, byte(i), 0x00, 0x00, 0x00,
-			0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
-		ifd68.KeySendMsg()
-		time.Sleep(300 * time.Millisecond)
-		if i == 255 {
-			i = 0
-		}
-	}
+// _testNewMode 测试新模式
+func (ifd68 *Ifd68Pro) _testNewMode() {
+
 }
 
-// Music 音律模式
-func (ifd68 *Ifd68Pro) __Music() {
+// _Music 音律模式测试
+func (ifd68 *Ifd68Pro) _Music() {
 	for {
 		if ifd68.MusicStatus {
-
-			//fmt.Println("开启音律 --- 002")
-
-			//if !ifd68.MusicStatus {
-			//	continue
-			//}
-			//time.Sleep(100 * time.Millisecond)
 			if v := <-sigAu; v {
 				ifd68.KeySendMsg()
 				time.Sleep(200 * time.Millisecond)
@@ -126,7 +99,6 @@ func (ifd68 *Ifd68Pro) __Music() {
 			if !ifd68.MusicStatus {
 				continue
 			}
-			//time.Sleep(500 * time.Millisecond)
 		}
 	}
 }

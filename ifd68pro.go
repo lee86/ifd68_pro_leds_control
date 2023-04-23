@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"github.com/sstallion/go-hid"
 	"strconv"
-	"time"
 )
 
 type Ifd68Pro struct {
 	MusicStatus    bool
 	MusicStatusNow bool
+	onkeyStatus    bool
 	device         *hid.Device
 	SendMsg        []byte
 	Light          []byte
@@ -49,155 +49,8 @@ var (
 	WireSleepOFF = []byte{0x04, 0x86, 0x94, 0xc1, 0x6b, 0x0d, 0x71, 0x98, 0x49, 0xcf, 0x69, 0xd3, 0x59, 0x98, 0x8d, 0x75, 0x06, 0x95, 0xee, 0xed, 0x2f} // 关闭无线休眠
 	WireSleepON  = []byte{0x04, 0x86, 0x94, 0xc1, 0x6b, 0x0d, 0x71, 0x98, 0x49, 0xef, 0x69, 0xd3, 0x59, 0x98, 0x8d, 0x75, 0x06, 0x95, 0xee, 0xed, 0x2f} //开启无线休眠
 	KeyValue     map[string][2]byte
+	keys         = [70]string{"esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "back", "`", "tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\", "del", "cap", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"", "enter", "pgup", "l_shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "r_shift", "up", "pgdown", "l_ctrl", "win", "l_alt", "space_l", "space", "space_r", "r_alt", "fn", "r_ctrl", "left", "down", "right"}
 )
-
-// BreathCheck 呼吸效果设定颜色
-func (ifd68 *Ifd68Pro) BreathCheck() {
-	R, G, B := ifd68.RGBConvert()
-	ifd68.Breath = []byte{0x04, 0x86, 0x93, 0xcd, 0x7a, 0xd5, 0x72, 0x99, 0x49, byte(R), byte(G), byte(B), 0x58, 0xe8, 0x9a, 0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
-	ifd68.SendMsg = ifd68.Breath
-}
-
-// AlwaysCheck 常亮模式设定颜色
-func (ifd68 *Ifd68Pro) AlwaysCheck() {
-	R, G, B := ifd68.RGBConvert()
-	ifd68.Alwayslight = []byte{0x04, 0x86, 0x93, 0xcc, 0x6a, 0x00, 0x72, 0x99, 0x49, byte(R), byte(G), byte(B), 0x58, 0xe8, 0x9a, 0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
-	ifd68.SendMsg = ifd68.Alwayslight
-}
-
-// KeySendMsg 发送消息到hid设备
-func (ifd68 *Ifd68Pro) KeySendMsg() {
-	//fmt.Println(ifd68.SendMsg)
-	_, err := ifd68.device.Write(ifd68.SendMsg)
-	if err != nil {
-		return
-	}
-}
-
-// setColor 根据传参设定颜色
-func (ifd68 *Ifd68Pro) SetColor() {
-	if ifd68.Color.ColorType != "yinlv" && ifd68.Color.ColorType != "liangdu" && ifd68.Color.ColorType != "close" {
-		sig <- false
-	}
-	if ifd68.Color.ColorType != "close" {
-		ifd68.SetLight()
-		ifd68.KeySendMsg()
-	}
-	switch ifd68.Color.ColorType {
-	case "breath":
-		ifd68.BreathCheck()
-	case "fengche":
-		ifd68.SendMsg = FENGCHE
-	case "jianbian":
-		ifd68.SendMsg = JianBian
-	case "liuguang":
-		ifd68.SendMsg = LiuGuang
-	case "gundong":
-		ifd68.SendMsg = GunDong
-	case "lianyi":
-		ifd68.SendMsg = LianYi
-	case "changliang":
-		ifd68.AlwaysCheck()
-	case "xinkong":
-		ifd68.SendMsg = XinKong
-	case "liangdu":
-		ifd68.SetLight()
-	case "close":
-		ifd68.SendMsg = CloseLEDS
-	case "yinlv":
-		fmt.Println("目前还不支持音律")
-		sig <- true
-		return
-	//目前还不支持
-	default:
-		return
-	}
-	//fmt.Printf("type: %v \n msg: %v \n", ifd68.Color.ColorType, ifd68.SendMsg)
-	ifd68.KeySendMsg()
-}
-
-// Music 音律模式
-func (ifd68 *Ifd68Pro) Music() {
-	ifd68.SendMsg = []byte{0x04, 0x86, 0x93, 0xcf, 0x8a, 0xdc, 0xae, 0x9c, 0x4a, 0x59, 0x61, 0xd1, 0x58, 0xe8, 0x9a, 0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
-	ifd68.KeySendMsg()
-	time.Sleep(150 * time.Millisecond)
-	for {
-		if !ifd68.MusicStatus {
-			break
-		}
-		ifd68.SendMsg = []byte{0x04, 0x86, 0x90, 0xc3, 0x4a, 0x6d, 0x76, 0x99, 0x09, 0x4a, 0x5a, 0x10, 0x37, 0x8e, 0xf6, 0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
-		ifd68.KeySendMsg()
-		time.Sleep(120 * time.Millisecond)
-		ifd68.SendMsg = []byte{0x04, 0x86, 0x90,
-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00,
-			0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
-		ifd68.KeySendMsg()
-		time.Sleep(300 * time.Millisecond)
-	}
-}
-
-// RGBConvert RGB转换成键盘需要的格式
-func (ifd68 *Ifd68Pro) RGBConvert() (int, int, int) {
-	var R, G, B int
-	r, _ := strconv.Atoi(ifd68.ColorWeb.R)
-	g, _ := strconv.Atoi(ifd68.ColorWeb.G)
-	b, _ := strconv.Atoi(ifd68.ColorWeb.B)
-	if R = r - 88; R < 0 {
-		R = -R
-	}
-	if G = g - 97; G < 0 {
-		G = -G
-	}
-	if B = b - 39; B < 0 {
-		B = -B
-	}
-	return R, G, B
-}
-
-// RGBConvertV RGB转换成键盘需要的格式
-func (ifd68 *Ifd68Pro) RGBConvertV(R, G, B int) (int, int, int) {
-	r, _ := strconv.Atoi(ifd68.ColorWeb.R)
-	g, _ := strconv.Atoi(ifd68.ColorWeb.G)
-	b, _ := strconv.Atoi(ifd68.ColorWeb.B)
-	if R = r - 88; R < 0 {
-		R = -R
-	}
-	if G = g - 97; G < 0 {
-		G = -G
-	}
-	if B = b - 39; B < 0 {
-		B = -B
-	}
-	return R, G, B
-}
-
-// SetLight 亮度设置
-func (ifd68 *Ifd68Pro) SetLight() {
-	light, _ := strconv.Atoi(ifd68.ColorWeb.Lightness)
-	if light = light - 242; light < 0 {
-		light = -light
-	}
-	ifd68.Light = []byte{0x04, 0x86, 0x94, 0xc1, 0x6a, byte(light), 0x71, 0x98, 0x49, 0xed, 0x69, 0xd3, 0x59, 0x98, 0x8d, 0x75, 0x06, 0x95, 0xee, 0xed, 0x2f}
-	ifd68.SendMsg = ifd68.Light
-}
-
-// SetMusicStatus 音律模式状态channel同步
-func (ifd68 *Ifd68Pro) SetMusicStatus(ch chan bool) {
-	for {
-		ifd68.MusicStatus = <-ch
-		if ifd68.MusicStatus != ifd68.MusicStatusNow {
-			ifd68.MusicStatusNow = ifd68.MusicStatus
-			switch ifd68.MusicStatus {
-			case true:
-				fmt.Println("开启音律模式")
-				ifd68.SendMsg = []byte{0x04, 0x86, 0x93, 0xcf, 0x8a, 0xdc, 0xae, 0x9c, 0x4a, 0x59, 0x61, 0xd1, 0x58, 0xe8, 0x9a, 0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
-				ifd68.KeySendMsg()
-			case false:
-				fmt.Println("关闭音律模式")
-			}
-		}
-	}
-}
 
 // init 初始化键位设置map
 func (ifd68 *Ifd68Pro) init() {
@@ -272,6 +125,120 @@ func (ifd68 *Ifd68Pro) init() {
 	KeyValue["a"] = [2]byte{207, 104}
 	KeyValue["z"] = [2]byte{207, 105}
 	KeyValue["1"] = [2]byte{207, 106}
+}
 
-	//fmt.Println(KeyValue)
+// KeySendMsg 发送消息到hid设备
+func (ifd68 *Ifd68Pro) KeySendMsg() {
+	//fmt.Println(ifd68.SendMsg)
+	_, err := ifd68.device.Write(ifd68.SendMsg)
+	if err != nil {
+		return
+	}
+}
+
+// SetColor 根据api收到数据设定颜色和模式
+func (ifd68 *Ifd68Pro) SetColor() {
+	if ifd68.Color.ColorType != "ColorRhythm" && ifd68.Color.ColorType != "Brightness" && ifd68.Color.ColorType != "Close" {
+		sig <- false
+	}
+	if ifd68.Color.ColorType != "Close" {
+		ifd68.SetLight()
+		ifd68.KeySendMsg()
+	}
+	if ifd68.Color.ColorType != "SetOneKeyMove" {
+		if ifd68.onkeyStatus {
+			ifd68.onkeyStatus = false
+		}
+	}
+	switch ifd68.Color.ColorType {
+	case "Breath":
+		ifd68.BreathCheck()
+	case "Windmill":
+		ifd68.SendMsg = FENGCHE
+	case "ColorGradient":
+		ifd68.SendMsg = JianBian
+	case "LightFlow":
+		ifd68.SendMsg = LiuGuang
+	case "ROLL":
+		ifd68.SendMsg = GunDong
+	case "Rippling":
+		ifd68.SendMsg = LianYi
+	case "Light":
+		ifd68.AlwaysCheck()
+	case "StarLight":
+		ifd68.SendMsg = XinKong
+	case "Brightness":
+		ifd68.SetLight()
+	case "SetOneKeyMove":
+		if ifd68.onkeyStatus {
+			return
+		}
+		ifd68.onkeyStatus = true
+		go ifd68.SetOneKeyMove()
+		return
+	case "ColorRhythm":
+		fmt.Println("目前还不支持音律")
+		sig <- true
+		return
+
+	case "Close":
+		ifd68.SendMsg = CloseLEDS
+	default:
+		return
+	}
+	//fmt.Printf("type: %v \n msg: %v \n", ifd68.Color.ColorType, ifd68.SendMsg)
+	ifd68.KeySendMsg()
+}
+
+// RGBConvert RGB转换成键盘需要的格式
+func (ifd68 *Ifd68Pro) RGBConvert() (int, int, int) {
+	var R, G, B int
+	r, _ := strconv.Atoi(ifd68.ColorWeb.R)
+	g, _ := strconv.Atoi(ifd68.ColorWeb.G)
+	b, _ := strconv.Atoi(ifd68.ColorWeb.B)
+	if R = r - 88; R < 0 {
+		R = -R
+	}
+	if G = g - 97; G < 0 {
+		G = -G
+	}
+	if B = b - 39; B < 0 {
+		B = -B
+	}
+	return R, G, B
+}
+
+// RGBConvertV RGB转换成键盘需要的格式
+func (ifd68 *Ifd68Pro) RGBConvertV(R, G, B int) (int, int, int) {
+	r, _ := strconv.Atoi(ifd68.ColorWeb.R)
+	g, _ := strconv.Atoi(ifd68.ColorWeb.G)
+	b, _ := strconv.Atoi(ifd68.ColorWeb.B)
+	if R = r - 88; R < 0 {
+		R = -R
+	}
+	if G = g - 97; G < 0 {
+		G = -G
+	}
+	if B = b - 39; B < 0 {
+		B = -B
+	}
+	return R, G, B
+}
+
+// SetMusicStatus 音律模式状态channel同步
+func (ifd68 *Ifd68Pro) SetMusicStatus(ch chan bool) {
+	for {
+		ifd68.MusicStatus = <-ch
+		if ifd68.MusicStatus != ifd68.MusicStatusNow {
+			ifd68.MusicStatusNow = ifd68.MusicStatus
+			switch ifd68.MusicStatus {
+			case true:
+				fmt.Println("开启音律模式")
+				ifd68.SendMsg = []byte{0x04, 0x86, 0x93, 0xcf, 0x8a, 0xdc, 0xae, 0x9c, 0x4a, 0x59, 0x61, 0xd1, 0x58, 0xe8, 0x9a, 0x7f, 0x01, 0x95, 0xee, 0xed, 0x2f}
+				ifd68.KeySendMsg()
+			case false:
+				fmt.Println("关闭音律模式")
+			}
+		}
+	}
 }
