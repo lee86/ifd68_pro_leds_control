@@ -1,0 +1,7 @@
+
+dist/
+server/.goreleaser.yaml
+server/build.bat
+.idea/
+client/node_modules
+client/out
