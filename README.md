@@ -1,5 +1,9 @@
 # ifd68_pro_leds_control
 
+##  最新消息
+
+忘记怎么写的了，预计无限期延迟
+
 ## 描述
 
 用于控制ifd68 pro的灯效，仅测试过`macOS 13.2 Beta版(22D5027d),芯片架构ARM64`和`Windows 11 21h2,芯片架构AMD64`
