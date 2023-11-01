@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/getlantern/systray"
 	"os"
 	"os/signal"
 	"syscall"
@@ -36,11 +37,13 @@ func main() {
 		//record()
 		//go ifd._audio()
 	}
-	s := <-osc
-	fmt.Println("开始关闭程序，原因：", s)
-	ifd.SendMsg = PersonSetOFF
-	ifd.KeySendMsg()
-	ifd.SendMsg = LiuGuang
-	ifd.KeySendMsg()
-	fmt.Println("所有进程目前均已退出，效果已更改为流光")
+	// 托盘程序逻辑
+	systray.Run(onReady, onExit)
+	//s := <-osc
+	//fmt.Println("开始关闭程序，原因：", s)
+	//ifd.SendMsg = PersonSetOFF
+	//ifd.KeySendMsg()
+	//ifd.SendMsg = LiuGuang
+	//ifd.KeySendMsg()
+	//fmt.Println("所有进程目前均已退出，效果已更改为流光")
 }
