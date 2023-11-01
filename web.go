@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
 )
 
-// startServer
+// startServer 开启控制台网页
 func (ifd68 *Ifd68Pro) startServer() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", ifd68.StartServer)
@@ -32,9 +33,17 @@ func (ifd68 *Ifd68Pro) ColorHandle(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println("Read failed:", err)
 	}
-	defer r.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Println("断链失败")
+		}
+	}(r.Body)
 	//fmt.Println(string(b))
-	json.Unmarshal(b, &ifd68.ColorWeb)
+	err = json.Unmarshal(b, &ifd68.ColorWeb)
+	if err != nil {
+		return
+	}
 	ifd68.Color.ColorType = ifd68.ColorWeb.ColorType
 	ifd68.SetColor()
 }
