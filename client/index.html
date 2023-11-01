@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'"
+    />
+    <meta
+            http-equiv="X-Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'"
+    />
+    <title>ifd68 driver</title>
+    <!-- 引入css样式 -->
+    <link rel="stylesheet" href="./exp/css.css">
+</head>
+<body>
+<!-- 键盘底板和键盘按钮 -->
+<div class="box"></div>
+
+<!-- RGB灯光面板 -->
+<div class="RGB">
+    <div class="red" id="Breath">呼吸</div>
+    <div class="orange" id="Windmill">风车</div>
+    <div class="yellow" id="ColorGradient">渐变</div>
+    <div class="green" id="LightFlow">流光</div>
+    <div class="blue" id="StarLight">星空</div>
+    <div class="purple" id="Roll">滚动</div>
+    <div class="deeppink" id="Rippling">涟漪</div>
+    <div class="white" id="Light">长亮</div>
+    <!--    <div class="grey" id="ColorRhythm">音律(不支持)</div>-->
+    <div class="grey" id="Brightness">调整亮度</div>
+    <div class="grey" id="SetOneKeyMove">单键移动</div>
+    <div class="grey" id="Close">关灯</div>
+</div>
+
+<!-- RGB、亮度拉条 -->
+<div class="RGB_COLOR">
+    <div><a class="red">红</a>
+    </div>
+    <div><a class="green">绿</a>
+    </div>
+    <div><a class="blue">蓝</a>
+    </div>
+    <div><a class="light">亮度</a>
+    </div>
+    <div><input type="range" id="rgb_r" min="0" max="255" value="255" onchange="change()"/>
+    </div>
+    <div><input type="range" id="rgb_g" min="0" max="255" value="255" onchange="change()"/>
+    </div>
+    <div><input type="range" id="rgb_b" min="0" max="255" value="255" onchange="change()"/>
+    </div>
+    <div><input type="range" id="rgb_l" min="0" max="255" value="255" onchange="change()"/>
+    </div>
+    <!--    <div><p id="info"></p>-->
+    <!--    </div>-->
+
+</div>
+<!-- 引入js脚本 -->
+<script src="./exp/js.js"></script>
+
+<script src="./renderer.js"></script>
+</body>
+</html>
