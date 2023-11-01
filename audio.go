@@ -1,3 +1,5 @@
+//go:build linux || darwin
+
 package main
 
 import "C"
@@ -132,11 +134,5 @@ func congtrolSpeed() {
 	for {
 		sigAuaa <- true
 		time.Sleep(1000 * time.Millisecond)
-	}
-}
-
-func chk(err error) {
-	if err != nil {
-		fmt.Println(err)
 	}
 }
